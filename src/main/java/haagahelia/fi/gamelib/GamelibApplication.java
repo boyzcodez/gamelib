@@ -1,13 +1,13 @@
-package haagahelia.fi.game;
+package haagahelia.fi.gamelib;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GameApplication {
+public class GamelibApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GameApplication.class, args);
+		SpringApplication.run(GamelibApplication.class, args);
 	}
 
 }

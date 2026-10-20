@@ -1,10 +1,10 @@
-package haagahelia.fi.game;
+package haagahelia.fi.gamelib;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GameApplicationTests {
+class GamelibApplicationTests {
 
 	@Test
 	void contextLoads() {

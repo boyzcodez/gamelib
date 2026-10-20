@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>haagahelia.fi</groupId>
-	<artifactId>game</artifactId>
+	<artifactId>gamelib</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>game</name>
+	<name>gamelib</name>
 	<description/>
 	<url/>
 	<licenses>
