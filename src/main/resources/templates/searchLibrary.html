@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,11 @@
 </head>
 
 <body>
+
+    <form th:action="@{/logout}" method="post" style="float: right;">
+        Logged in as <strong sec:authentication="name"></strong>
+        <button type="submit">Log out</button>
+    </form>
 
     <h1>Game Database</h1>
 
