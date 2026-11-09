@@ -1,6 +1,7 @@
 package haagahelia.fi.gamelib.igdb;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,6 +53,37 @@ public class IgdbService {
                                 ? COVER_URL.formatted(g.cover().imageId())
                                 : null))
                 .toList();
+    }
+
+    // Fetches the full details of a single game by its IGDB id. Returns null if not found.
+    public GameDetails getGameDetails(Long igdbId) {
+        String body = "fields name, summary, first_release_date, total_rating, cover.image_id, genres.name, platforms.name;"
+                + " where id = " + igdbId + ";";
+
+        IgdbGameDetails[] games = restClient.post()
+                .uri("https://api.igdb.com/v4/games")
+                .header("Client-ID", clientId)
+                .header("Authorization", "Bearer " + getAccessToken())
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(body)
+                .retrieve()
+                .body(IgdbGameDetails[].class);
+
+        if (games == null || games.length == 0) {
+            return null;
+        }
+        IgdbGameDetails g = games[0];
+        return new GameDetails(
+                g.id(),
+                g.name(),
+                g.cover() != null && g.cover().imageId() != null ? COVER_URL.formatted(g.cover().imageId()) : null,
+                g.firstReleaseDate() != null
+                        ? Instant.ofEpochSecond(g.firstReleaseDate()).atZone(ZoneOffset.UTC).getYear()
+                        : null,
+                g.summary(),
+                g.genres() != null ? g.genres().stream().map(IgdbGameDetails.Named::name).toList() : List.of(),
+                g.platforms() != null ? g.platforms().stream().map(IgdbGameDetails.Named::name).toList() : List.of(),
+                g.totalRating() != null ? (int) Math.round(g.totalRating()) : null);
     }
 
     // Fetches an app access token from Twitch and reuses it until it is about to expire

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${game.title}">Game</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body>
+
+    <form th:action="@{/logout}" method="post" style="float: right;">
+        Logged in as <strong sec:authentication="name"></strong>
+        <button type="submit">Log out</button>
+    </form>
+
+    <a th:href="@{/privateLibrary}">&larr; Back to library</a>
+
+    <!-- Details fetched from IGDB -->
+    <div th:if="${details != null}" style="display: flex; gap: 24px; margin-top: 16px;">
+        <div>
+            <img th:if="${details.coverUrl != null}" th:src="${details.coverUrl}" th:alt="${details.name}"
+                 style="width: 264px; height: 352px; object-fit: cover;">
+            <div th:if="${details.coverUrl == null}"
+                 style="width: 264px; height: 352px; background: #ccc;">No image</div>
+        </div>
+        <div style="max-width: 700px;">
+            <h1>
+                <span th:text="${details.name}"></span>
+                <small th:if="${details.releaseYear != null}" th:text="'(' + ${details.releaseYear} + ')'"></small>
+            </h1>
+            <p th:if="${!#lists.isEmpty(details.genres)}">
+                <strong>Genres:</strong> <span th:text="${#strings.listJoin(details.genres, ', ')}"></span>
+            </p>
+            <p th:if="${!#lists.isEmpty(details.platforms)}">
+                <strong>Platforms:</strong> <span th:text="${#strings.listJoin(details.platforms, ', ')}"></span>
+            </p>
+            <p th:if="${details.rating != null}">
+                <strong>Rating:</strong> <span th:text="${details.rating} + ' / 100'"></span>
+            </p>
+            <p th:text="${details.summary != null ? details.summary : 'No description available.'}"></p>
+        </div>
+    </div>
+
+    <!-- Fallback when IGDB details could not be loaded -->
+    <div th:if="${details == null}" style="margin-top: 16px;">
+        <h1 th:text="${game.title}"></h1>
+        <img th:if="${game.coverImageUrl != null}" th:src="${game.coverImageUrl}" th:alt="${game.title}"
+             style="width: 264px; height: 352px; object-fit: cover;">
+        <p>More details could not be loaded right now.</p>
+    </div>
+
+</body>
+</html>
