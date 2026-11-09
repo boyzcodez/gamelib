@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body>
+
+    <h1>Login</h1>
+
+    <div th:if="${param.error}">Invalid username or password.</div>
+    <div th:if="${param.logout}">You have been logged out.</div>
+
+    <!-- Spring Security expects a POST to /login with fields "username" and "password" -->
+    <form th:action="@{/login}" method="post">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" autofocus>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <button type="submit">Sign in</button>
+    </form>
+
+</body>
+</html>
