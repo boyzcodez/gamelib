@@ -3,42 +3,42 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Search</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
 
-    <form th:action="@{/logout}" method="post" style="float: right;">
-        Logged in as <strong sec:authentication="name"></strong>
-        <button type="submit">Log out</button>
-    </form>
+    <div th:replace="~{fragments/header :: topbar('search')}"></div>
 
-    <h1>Game Database</h1>
+    <main class="container">
+        <div class="page-header">
+            <h1>Game Database</h1>
+        </div>
 
-    <form th:action="@{/searchLibrary}" method="get">
-        <input type="text" name="q" th:value="${query}" placeholder="Search games..." autofocus>
-        <button type="submit">Search</button>
-    </form>
-
-    <p th:if="${query != null and !#strings.isEmpty(query) and #lists.isEmpty(games)}">No games found.</p>
-
-    <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px;">
-        <!-- Clicking the cover submits the form and adds the game to the user's library -->
-        <form th:each="game : ${games}" th:action="@{/library/add}" method="post" style="width: 200px;">
-            <input type="hidden" name="igdbId" th:value="${game.id}">
-            <input type="hidden" name="title" th:value="${game.name}">
-            <input type="hidden" name="coverUrl" th:value="${game.coverUrl}">
-            <button type="submit" title="Add to my library"
-                    style="padding: 0; border: none; background: none; cursor: pointer;">
-                <img th:if="${game.coverUrl != null}" th:src="${game.coverUrl}" th:alt="${game.name}"
-                     style="width: 200px; height: 267px; object-fit: cover;">
-                <div th:if="${game.coverUrl == null}"
-                     style="width: 200px; height: 267px; background: #ccc;">No image</div>
-            </button>
-            <p th:text="${game.name}"></p>
+        <form class="search-bar" th:action="@{/searchLibrary}" method="get">
+            <input type="text" name="q" th:value="${query}" placeholder="Search games..." autofocus>
+            <button type="submit" class="btn">Search</button>
         </form>
-    </div>
+
+        <p class="empty" th:if="${query != null and !#strings.isEmpty(query) and #lists.isEmpty(games)}">No games found.</p>
+
+        <div class="game-grid">
+            <!-- Clicking the cover submits the form and adds the game to the user's library -->
+            <form th:each="game : ${games}" th:action="@{/library/add}" method="post" class="game-card">
+                <input type="hidden" name="igdbId" th:value="${game.id}">
+                <input type="hidden" name="title" th:value="${game.name}">
+                <input type="hidden" name="coverUrl" th:value="${game.coverUrl}">
+                <button type="submit" class="cover-button" title="Add to my library">
+                    <img th:if="${game.coverUrl != null}" th:src="${game.coverUrl}" th:alt="${game.name}">
+                    <div th:if="${game.coverUrl == null}" class="no-image">No image</div>
+                    <span class="add-overlay">+ Add to Library</span>
+                </button>
+                <p class="game-card-title" th:text="${game.name}" th:title="${game.name}"></p>
+            </form>
+        </div>
+    </main>
 
 </body>
 </html>

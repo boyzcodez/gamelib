@@ -3,52 +3,61 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${game.title}">Game</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
 
-    <form th:action="@{/logout}" method="post" style="float: right;">
-        Logged in as <strong sec:authentication="name"></strong>
-        <button type="submit">Log out</button>
-    </form>
+    <div th:replace="~{fragments/header :: topbar('library')}"></div>
 
-    <a th:href="@{/privateLibrary}">&larr; Back to library</a>
+    <main class="container">
+        <a class="back-link" th:href="@{/privateLibrary}">&larr; Back to library</a>
 
-    <!-- Details fetched from IGDB -->
-    <div th:if="${details != null}" style="display: flex; gap: 24px; margin-top: 16px;">
-        <div>
-            <img th:if="${details.coverUrl != null}" th:src="${details.coverUrl}" th:alt="${details.name}"
-                 style="width: 264px; height: 352px; object-fit: cover;">
-            <div th:if="${details.coverUrl == null}"
-                 style="width: 264px; height: 352px; background: #ccc;">No image</div>
+        <!-- Details fetched from IGDB -->
+        <div th:if="${details != null}" class="details">
+            <div class="details-cover">
+                <img th:if="${details.coverUrl != null}" th:src="${details.coverUrl}" th:alt="${details.name}">
+                <div th:if="${details.coverUrl == null}" class="no-image">No image</div>
+            </div>
+            <div class="details-info">
+                <h1>
+                    <span th:text="${details.name}"></span>
+                    <span class="year" th:if="${details.releaseYear != null}" th:text="'(' + ${details.releaseYear} + ')'"></span>
+                </h1>
+
+                <dl class="meta">
+                    <th:block th:if="${!#lists.isEmpty(details.genres)}">
+                        <dt>Genres</dt>
+                        <dd><span class="tag" th:each="genre : ${details.genres}" th:text="${genre}"></span></dd>
+                    </th:block>
+                    <th:block th:if="${!#lists.isEmpty(details.platforms)}">
+                        <dt>Platforms</dt>
+                        <dd th:text="${#strings.listJoin(details.platforms, ', ')}"></dd>
+                    </th:block>
+                    <th:block th:if="${details.rating != null}">
+                        <dt>Rating</dt>
+                        <dd class="rating" th:text="${details.rating} + ' / 100'"></dd>
+                    </th:block>
+                </dl>
+
+                <p class="summary" th:text="${details.summary != null ? details.summary : 'No description available.'}"></p>
+            </div>
         </div>
-        <div style="max-width: 700px;">
-            <h1>
-                <span th:text="${details.name}"></span>
-                <small th:if="${details.releaseYear != null}" th:text="'(' + ${details.releaseYear} + ')'"></small>
-            </h1>
-            <p th:if="${!#lists.isEmpty(details.genres)}">
-                <strong>Genres:</strong> <span th:text="${#strings.listJoin(details.genres, ', ')}"></span>
-            </p>
-            <p th:if="${!#lists.isEmpty(details.platforms)}">
-                <strong>Platforms:</strong> <span th:text="${#strings.listJoin(details.platforms, ', ')}"></span>
-            </p>
-            <p th:if="${details.rating != null}">
-                <strong>Rating:</strong> <span th:text="${details.rating} + ' / 100'"></span>
-            </p>
-            <p th:text="${details.summary != null ? details.summary : 'No description available.'}"></p>
-        </div>
-    </div>
 
-    <!-- Fallback when IGDB details could not be loaded -->
-    <div th:if="${details == null}" style="margin-top: 16px;">
-        <h1 th:text="${game.title}"></h1>
-        <img th:if="${game.coverImageUrl != null}" th:src="${game.coverImageUrl}" th:alt="${game.title}"
-             style="width: 264px; height: 352px; object-fit: cover;">
-        <p>More details could not be loaded right now.</p>
-    </div>
+        <!-- Fallback when IGDB details could not be loaded -->
+        <div th:if="${details == null}" class="details">
+            <div class="details-cover">
+                <img th:if="${game.coverImageUrl != null}" th:src="${game.coverImageUrl}" th:alt="${game.title}">
+                <div th:if="${game.coverImageUrl == null}" class="no-image">No image</div>
+            </div>
+            <div class="details-info">
+                <h1 th:text="${game.title}"></h1>
+                <p class="muted">More details could not be loaded right now.</p>
+            </div>
+        </div>
+    </main>
 
 </body>
 </html>

@@ -3,33 +3,33 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Games</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
 
-    <form th:action="@{/logout}" method="post" style="float: right;">
-        Logged in as <strong sec:authentication="name"></strong>
-        <button type="submit">Log out</button>
-    </form>
+    <div th:replace="~{fragments/header :: topbar('library')}"></div>
 
-    <h1>Games</h1>
+    <main class="container">
+        <div class="page-header">
+            <h1>My Library <span class="muted" th:text="'(' + ${#lists.size(games)} + ')'"></span></h1>
+            <a class="btn btn-green" th:href="@{/searchLibrary}">+ Add games</a>
+        </div>
 
-    <a th:href="@{/searchLibrary}">Search for games to add</a>
+        <p class="empty" th:if="${#lists.isEmpty(games)}">
+            Your library is empty. <a th:href="@{/searchLibrary}">Search for games</a> to get started.
+        </p>
 
-    <p th:if="${#lists.isEmpty(games)}">Your library is empty.</p>
-
-    <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px;">
-        <a th:each="game : ${games}" th:href="@{/library/game/{id}(id=${game.id})}"
-           style="width: 200px; color: inherit; text-decoration: none;">
-            <img th:if="${game.coverImageUrl != null}" th:src="${game.coverImageUrl}" th:alt="${game.title}"
-                 style="width: 200px; height: 267px; object-fit: cover;">
-            <div th:if="${game.coverImageUrl == null}"
-                 style="width: 200px; height: 267px; background: #ccc;">No image</div>
-            <p th:text="${game.title}"></p>
-        </a>
-    </div>
+        <div class="game-grid">
+            <a th:each="game : ${games}" th:href="@{/library/game/{id}(id=${game.id})}" class="game-card">
+                <img th:if="${game.coverImageUrl != null}" th:src="${game.coverImageUrl}" th:alt="${game.title}">
+                <div th:if="${game.coverImageUrl == null}" class="no-image">No image</div>
+                <p class="game-card-title" th:text="${game.title}" th:title="${game.title}"></p>
+            </a>
+        </div>
+    </main>
 
 </body>
 </html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+    <!-- Shared top bar. Usage: th:replace="~{fragments/header :: topbar('library')}" -->
+    <header class="topbar" th:fragment="topbar(active)">
+        <div class="topbar-inner">
+            <a class="brand" th:href="@{/privateLibrary}">GAME<span>LIB</span></a>
+            <nav class="nav" sec:authorize="isAuthenticated()">
+                <a th:href="@{/privateLibrary}" th:classappend="${active == 'library'} ? 'active'">Library</a>
+                <a th:href="@{/searchLibrary}" th:classappend="${active == 'search'} ? 'active'">Store Search</a>
+            </nav>
+            <div class="user-box" sec:authorize="isAuthenticated()">
+                <span>Logged in as <strong sec:authentication="name"></strong></span>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-subtle">Log out</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+</body>
+</html>
