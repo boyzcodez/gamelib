@@ -11,5 +11,22 @@
 
     <h1>Game Database</h1>
 
+    <form th:action="@{/searchLibrary}" method="get">
+        <input type="text" name="q" th:value="${query}" placeholder="Search games..." autofocus>
+        <button type="submit">Search</button>
+    </form>
+
+    <p th:if="${query != null and !#strings.isEmpty(query) and #lists.isEmpty(games)}">No games found.</p>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px;">
+        <div th:each="game : ${games}" style="width: 200px;">
+            <img th:if="${game.coverUrl != null}" th:src="${game.coverUrl}" th:alt="${game.name}"
+                 style="width: 200px; height: 267px; object-fit: cover;">
+            <div th:if="${game.coverUrl == null}"
+                 style="width: 200px; height: 267px; background: #ccc;">No image</div>
+            <p th:text="${game.name}"></p>
+        </div>
+    </div>
+
 </body>
 </html>
