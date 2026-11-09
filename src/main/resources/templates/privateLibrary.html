@@ -11,5 +11,19 @@
 
     <h1>Games</h1>
 
+    <a th:href="@{/searchLibrary}">Search for games to add</a>
+
+    <p th:if="${#lists.isEmpty(games)}">Your library is empty.</p>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px;">
+        <div th:each="game : ${games}" style="width: 200px;">
+            <img th:if="${game.coverImageUrl != null}" th:src="${game.coverImageUrl}" th:alt="${game.title}"
+                 style="width: 200px; height: 267px; object-fit: cover;">
+            <div th:if="${game.coverImageUrl == null}"
+                 style="width: 200px; height: 267px; background: #ccc;">No image</div>
+            <p th:text="${game.title}"></p>
+        </div>
+    </div>
+
 </body>
 </html>

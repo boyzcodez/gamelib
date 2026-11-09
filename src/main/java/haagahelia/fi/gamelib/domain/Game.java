@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Game {
@@ -20,6 +22,14 @@ public class Game {
     public String Genres;
     public String platforms;
     public String description;
+
+    // IGDB's id for the game, used to avoid adding the same game twice
+    private Long igdbId;
+
+    // The user whose library this game belongs to
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private AppUser owner;
 
     public Game() {
     }
@@ -91,5 +101,19 @@ public class Game {
         this.description = description;
     }
 
-    
+    public Long getIgdbId() {
+        return igdbId;
+    }
+
+    public void setIgdbId(Long igdbId) {
+        this.igdbId = igdbId;
+    }
+
+    public AppUser getOwner() {
+        return owner;
+    }
+
+    public void setOwner(AppUser owner) {
+        this.owner = owner;
+    }
 }

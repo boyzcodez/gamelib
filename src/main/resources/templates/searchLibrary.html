@@ -19,13 +19,20 @@
     <p th:if="${query != null and !#strings.isEmpty(query) and #lists.isEmpty(games)}">No games found.</p>
 
     <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px;">
-        <div th:each="game : ${games}" style="width: 200px;">
-            <img th:if="${game.coverUrl != null}" th:src="${game.coverUrl}" th:alt="${game.name}"
-                 style="width: 200px; height: 267px; object-fit: cover;">
-            <div th:if="${game.coverUrl == null}"
-                 style="width: 200px; height: 267px; background: #ccc;">No image</div>
+        <!-- Clicking the cover submits the form and adds the game to the user's library -->
+        <form th:each="game : ${games}" th:action="@{/library/add}" method="post" style="width: 200px;">
+            <input type="hidden" name="igdbId" th:value="${game.id}">
+            <input type="hidden" name="title" th:value="${game.name}">
+            <input type="hidden" name="coverUrl" th:value="${game.coverUrl}">
+            <button type="submit" title="Add to my library"
+                    style="padding: 0; border: none; background: none; cursor: pointer;">
+                <img th:if="${game.coverUrl != null}" th:src="${game.coverUrl}" th:alt="${game.name}"
+                     style="width: 200px; height: 267px; object-fit: cover;">
+                <div th:if="${game.coverUrl == null}"
+                     style="width: 200px; height: 267px; background: #ccc;">No image</div>
+            </button>
             <p th:text="${game.name}"></p>
-        </div>
+        </form>
     </div>
 
 </body>
