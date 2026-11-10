@@ -2,7 +2,7 @@ package haagahelia.fi.gamelib.igdb;
 
 import java.util.List;
 
-// What the game details page displays
+// Mitä pelin tietosivu näyttää.
 public record GameDetails(
         Long id,
         String name,

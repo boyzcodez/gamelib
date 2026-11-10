@@ -19,9 +19,11 @@ public class SearchController {
         this.igdbService = igdbService;
     }
 
+    // Hakusivu. Hakusana tulee URL:sta, esim. /searchLibrary?q=zelda
     @GetMapping("/searchLibrary")
     public String searchLibrary(@RequestParam(name = "q", required = false) String query, Model model) {
         List<GameSearchResult> games = List.of();
+        
         if (query != null && !query.isBlank()) {
             games = igdbService.searchGames(query.trim());
         }

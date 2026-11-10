@@ -23,10 +23,10 @@ public class Game {
     public String platforms;
     public String description;
 
-    // IGDB's id for the game, used to avoid adding the same game twice
+    // IGDB's id pelille, jotta ei tallenneta pelia useamman kerran
+    // Käytetään myös tietojen hakemiseen
     private Long igdbId;
 
-    // The user whose library this game belongs to
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private AppUser owner;
