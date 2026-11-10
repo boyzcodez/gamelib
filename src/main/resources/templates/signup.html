@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <div th:replace="~{fragments/header :: topbar('signup')}"></div>
+
+    <main class="login-page">
+        <div class="login-box">
+            <h1>Create account</h1>
+
+            <form th:action="@{/saveuser}" th:object="${signupform}" method="post">
+                <div class="form-group">
+                    <label for="username">Account name</label>
+                    <input type="text" id="username" th:field="*{username}" autofocus>
+                    <div class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" th:field="*{password}">
+                    <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="passwordCheck">Re-enter password</label>
+                    <input type="password" id="passwordCheck" th:field="*{passwordCheck}">
+                    <div class="field-error" th:if="${#fields.hasErrors('passwordCheck')}" th:errors="*{passwordCheck}"></div>
+                </div>
+                <button type="submit" class="btn">Register</button>
+            </form>
+
+            <p class="form-switch">Already have an account? <a th:href="@{/login}">Sign in</a></p>
+        </div>
+    </main>
+
+</body>
+</html>

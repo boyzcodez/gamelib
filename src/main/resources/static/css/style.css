@@ -442,3 +442,17 @@ input::placeholder {
     color: var(--accent);
     border-left: 3px solid var(--accent);
 }
+
+/* ---------- Register ---------- */
+
+.field-error {
+    margin-top: 4px;
+    color: #ff8a8a;
+    font-size: 12px;
+}
+
+.form-switch {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 13px;
+}
